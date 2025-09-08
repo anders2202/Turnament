@@ -4,11 +4,24 @@ using Turnament.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure database
+var useInMemory = builder.Configuration.GetValue("Database:UseInMemory", true);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<TurnamentDbContext>(opt =>
-    opt.UseInMemoryDatabase("turnament-dev")); // Replace with Npgsql in real env
+if (useInMemory)
+{
+    builder.Services.AddDbContext<TurnamentDbContext>(opt =>
+        opt.UseInMemoryDatabase("turnament-dev"));
+}
+else
+{
+    var cs = builder.Configuration.GetConnectionString("Default") ??
+             throw new InvalidOperationException("Connection string 'Default' not found.");
+    builder.Services.AddDbContext<TurnamentDbContext>(opt =>
+        opt.UseNpgsql(cs));
+}
 
 builder.Services.AddScoped<IFixtureGenerator, RoundRobinFixtureGenerator>();
 builder.Services.AddScoped<IStandingsCalculator, StandingsCalculator>();
@@ -19,6 +32,24 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+// Apply migrations & seed (Postgres only)
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var ctx = scope.ServiceProvider.GetRequiredService<TurnamentDbContext>();
+        if (ctx.Database.ProviderName != null && !ctx.Database.ProviderName.Contains("InMemory"))
+        {
+            ctx.Database.Migrate();
+            await DevSeeder.SeedAsync(ctx);
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database migration/seeding failed: {ex.Message}");
+    }
 }
 
 app.MapPost("/api/tournaments", async (TurnamentDbContext db, Tournament t) =>
@@ -56,6 +87,25 @@ app.MapPost("/api/divisions/{divisionId:guid}/groups", async (TurnamentDbContext
     return Results.Created($"/api/groups/{g.Id}", g);
 });
 
+app.MapPost("/api/groups/{groupId:guid}/add-team/{teamId:guid}", async (TurnamentDbContext db, Guid groupId, Guid teamId) =>
+{
+    var group = await db.Groups.FindAsync(groupId);
+    var team = await db.Teams.FindAsync(teamId);
+    if (group == null || team == null) return Results.NotFound();
+    bool exists = await db.GroupTeams.AnyAsync(gt => gt.GroupId == groupId && gt.TeamId == teamId);
+    if (!exists)
+    {
+        db.GroupTeams.Add(new GroupTeam { GroupId = groupId, TeamId = teamId });
+        // Also create a standing row if absent
+        if (!await db.GroupStandings.AnyAsync(s => s.GroupId == groupId && s.TeamId == teamId))
+        {
+            db.GroupStandings.Add(new GroupStanding { GroupId = groupId, TeamId = teamId });
+        }
+        await db.SaveChangesAsync();
+    }
+    return Results.Ok();
+});
+
 app.MapPost("/api/groups/{groupId:guid}/standings/init", async (TurnamentDbContext db, Guid groupId) =>
 {
     var group = await db.Groups.FindAsync(groupId);
@@ -85,8 +135,29 @@ app.MapPut("/api/matches/{matchId:guid}/result", async (TurnamentDbContext db, G
     if (match == null) return Results.NotFound();
     match.Score = new Score(homeGoals, awayGoals);
     match.Status = MatchStatus.Final;
+    // Apply standings update if group match
+    if (match.GroupId.HasValue)
+    {
+        var ruleSet = await db.RuleSets.FirstOrDefaultAsync(); // simplistic; later use division rules
+        var homeStanding = await db.GroupStandings.FirstOrDefaultAsync(s => s.TeamId == match.HomeTeamId && s.GroupId == match.GroupId);
+        var awayStanding = await db.GroupStandings.FirstOrDefaultAsync(s => s.TeamId == match.AwayTeamId && s.GroupId == match.GroupId);
+        if (homeStanding != null && awayStanding != null && ruleSet != null)
+        {
+            calc.ApplyResult(match, homeStanding, awayStanding, ruleSet);
+        }
+    }
     await db.SaveChangesAsync();
     return Results.Ok(match);
+});
+
+app.MapGet("/api/groups/{groupId:guid}/standings", async (TurnamentDbContext db, Guid groupId) =>
+{
+    var standings = await db.GroupStandings.Where(s => s.GroupId == groupId)
+        .OrderByDescending(s => s.Points)
+        .ThenByDescending(s => s.GoalDifference)
+        .ThenByDescending(s => s.GoalsFor)
+        .ToListAsync();
+    return Results.Ok(standings);
 });
 
 app.Run();

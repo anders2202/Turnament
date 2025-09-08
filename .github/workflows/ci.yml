@@ -15,12 +15,21 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
       - name: Restore
-        run: dotnet restore
+        run: |
+          dotnet restore Turnament.sln
+          ls -R src/Turnament.Api/obj || true
       - name: Build
-        run: dotnet build --no-restore -c Release
+        run: dotnet build Turnament.sln --no-restore -c Release
       - name: Test
-        run: dotnet test --no-build -c Release --collect:"Xplat Code Coverage" --results-directory coverage
+        run: dotnet test Turnament.sln --no-build -c Release --collect:"Xplat Code Coverage" --results-directory coverage
       - name: Report Coverage Summary
         if: always()
         run: |
