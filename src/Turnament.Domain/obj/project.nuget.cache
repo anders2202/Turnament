@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "eBoSJKSaHu0=",
+  "success": true,
+  "projectFilePath": "c:\\repos\\Turnament\\src\\Turnament.Domain\\Turnament.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\AndersBorgLarsen\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.19\\microsoft.netcore.app.ref.8.0.19.nupkg.sha512",
+    "C:\\Users\\AndersBorgLarsen\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.19\\microsoft.windowsdesktop.app.ref.8.0.19.nupkg.sha512",
+    "C:\\Users\\AndersBorgLarsen\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.19\\microsoft.aspnetcore.app.ref.8.0.19.nupkg.sha512"
+  ],
+  "logs": []
+}

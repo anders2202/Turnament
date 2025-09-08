@@ -1,0 +1,15 @@
+c:\repos\Turnament\src\Turnament.Infrastructure\bin\Debug\net8.0\Turnament.Infrastructure.deps.json
+c:\repos\Turnament\src\Turnament.Infrastructure\bin\Debug\net8.0\Turnament.Infrastructure.dll
+c:\repos\Turnament\src\Turnament.Infrastructure\bin\Debug\net8.0\Turnament.Infrastructure.pdb
+c:\repos\Turnament\src\Turnament.Infrastructure\bin\Debug\net8.0\Turnament.Domain.dll
+c:\repos\Turnament\src\Turnament.Infrastructure\bin\Debug\net8.0\Turnament.Domain.pdb
+c:\repos\Turnament\src\Turnament.Infrastructure\obj\Debug\net8.0\Turnament.Infrastructure.csproj.AssemblyReference.cache
+c:\repos\Turnament\src\Turnament.Infrastructure\obj\Debug\net8.0\Turnament.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+c:\repos\Turnament\src\Turnament.Infrastructure\obj\Debug\net8.0\Turnament.Infrastructure.AssemblyInfoInputs.cache
+c:\repos\Turnament\src\Turnament.Infrastructure\obj\Debug\net8.0\Turnament.Infrastructure.AssemblyInfo.cs
+c:\repos\Turnament\src\Turnament.Infrastructure\obj\Debug\net8.0\Turnament.Infrastructure.csproj.CoreCompileInputs.cache
+c:\repos\Turnament\src\Turnament.Infrastructure\obj\Debug\net8.0\Turnamen.930EEC53.Up2Date
+c:\repos\Turnament\src\Turnament.Infrastructure\obj\Debug\net8.0\Turnament.Infrastructure.dll
+c:\repos\Turnament\src\Turnament.Infrastructure\obj\Debug\net8.0\refint\Turnament.Infrastructure.dll
+c:\repos\Turnament\src\Turnament.Infrastructure\obj\Debug\net8.0\Turnament.Infrastructure.pdb
+c:\repos\Turnament\src\Turnament.Infrastructure\obj\Debug\net8.0\ref\Turnament.Infrastructure.dll

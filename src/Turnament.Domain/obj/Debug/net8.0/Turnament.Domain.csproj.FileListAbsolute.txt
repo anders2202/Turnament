@@ -1,0 +1,11 @@
+c:\repos\Turnament\src\Turnament.Domain\bin\Debug\net8.0\Turnament.Domain.deps.json
+c:\repos\Turnament\src\Turnament.Domain\bin\Debug\net8.0\Turnament.Domain.dll
+c:\repos\Turnament\src\Turnament.Domain\bin\Debug\net8.0\Turnament.Domain.pdb
+c:\repos\Turnament\src\Turnament.Domain\obj\Debug\net8.0\Turnament.Domain.GeneratedMSBuildEditorConfig.editorconfig
+c:\repos\Turnament\src\Turnament.Domain\obj\Debug\net8.0\Turnament.Domain.AssemblyInfoInputs.cache
+c:\repos\Turnament\src\Turnament.Domain\obj\Debug\net8.0\Turnament.Domain.AssemblyInfo.cs
+c:\repos\Turnament\src\Turnament.Domain\obj\Debug\net8.0\Turnament.Domain.csproj.CoreCompileInputs.cache
+c:\repos\Turnament\src\Turnament.Domain\obj\Debug\net8.0\Turnament.Domain.dll
+c:\repos\Turnament\src\Turnament.Domain\obj\Debug\net8.0\refint\Turnament.Domain.dll
+c:\repos\Turnament\src\Turnament.Domain\obj\Debug\net8.0\Turnament.Domain.pdb
+c:\repos\Turnament\src\Turnament.Domain\obj\Debug\net8.0\ref\Turnament.Domain.dll
