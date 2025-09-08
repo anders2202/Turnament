@@ -34,6 +34,24 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Apply migrations & seed (Postgres only)
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var ctx = scope.ServiceProvider.GetRequiredService<TurnamentDbContext>();
+        if (ctx.Database.ProviderName != null && !ctx.Database.ProviderName.Contains("InMemory"))
+        {
+            ctx.Database.Migrate();
+            await DevSeeder.SeedAsync(ctx);
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database migration/seeding failed: {ex.Message}");
+    }
+}
+
 app.MapPost("/api/tournaments", async (TurnamentDbContext db, Tournament t) =>
 {
     db.Tournaments.Add(t);
