@@ -1,0 +1,76 @@
+# .NET build artifacts
+bin/
+obj/
+**/bin/
+**/obj/
+
+# VS / VS Code
+.vs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# User-specific
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+logs/
+
+# OS
+[Dd]esktop.ini
+[Tt]humbs.db
+.DS_Store
+
+# Dotnet tools / local
+*.snupkg
+*.nupkg
+.nuget/
+.dotnet/
+.tools/
+
+# Coverage
+coverage/
+**/TestResults/
+*.coverage
+*.coveragexml
+
+# EF Core Migrations design-time artifacts
+**/Migrations/obj/
+
+# Generated
+Generated/**
+
+# Secrets / env (do not commit real .env if used)
+*.env
+*.env.local
+
+# JetBrains Rider
+.idea/
+*.iml
+
+# Azure / Aspire local state
+.acs
+**/App_Data/
+
+# Node (if added later)
+node_modules/
+
+# Docker
+*.pid
+
+# Templating caches
+*.tmpl.cache
+
+# macOS attributes
+.AppleDouble
+.LSOverride
+
+# Backup files
+*~
+*.swp
