@@ -4,11 +4,24 @@ using Turnament.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure database
+var useInMemory = builder.Configuration.GetValue("Database:UseInMemory", true);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<TurnamentDbContext>(opt =>
-    opt.UseInMemoryDatabase("turnament-dev")); // Replace with Npgsql in real env
+if (useInMemory)
+{
+    builder.Services.AddDbContext<TurnamentDbContext>(opt =>
+        opt.UseInMemoryDatabase("turnament-dev"));
+}
+else
+{
+    var cs = builder.Configuration.GetConnectionString("Default") ??
+             throw new InvalidOperationException("Connection string 'Default' not found.");
+    builder.Services.AddDbContext<TurnamentDbContext>(opt =>
+        opt.UseNpgsql(cs));
+}
 
 builder.Services.AddScoped<IFixtureGenerator, RoundRobinFixtureGenerator>();
 builder.Services.AddScoped<IStandingsCalculator, StandingsCalculator>();
