@@ -54,6 +54,13 @@ public class Group
     public List<GroupStanding> Standings { get; set; } = new();
 }
 
+public class GroupTeam
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid GroupId { get; set; }
+    public Guid TeamId { get; set; }
+}
+
 public class GroupStanding
 {
     public Guid Id { get; set; } = Guid.NewGuid();
